@@ -7,10 +7,10 @@ import { verify_password } from "../utils/bcryptUtils"
 
 type login_schema = z.infer<typeof login_schema>
 type user_params = z.infer<typeof user_schema>
-const users_colection = collection(db, 'users')
+const users_collection = collection(db, 'users')
 
 const get_users = async () => {
-    const data = await getDocs(users_colection)
+    const data = await getDocs(users_collection)
     const user_list = data.docs.map((doc) => ({...doc.data()}))
     const list = user_list.map((unused, index) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,7 +22,7 @@ const get_users = async () => {
 }
 
 const check_email = async (email: string) => {
-    const q = query(users_colection, where("email", "==", email))
+    const q = query(users_collection, where("email", "==", email))
     const query_snapshot = await getDocs(q)
 
     if (query_snapshot.empty) {return false}
@@ -31,7 +31,7 @@ const check_email = async (email: string) => {
 }
 
 const check_login = async (login: login_schema) => {
-    const q = query(users_colection, where('email', '==', login.email))
+    const q = query(users_collection, where('email', '==', login.email))
     const query_snapshot = await getDocs(q)
 
     if (query_snapshot.empty) { return false }
@@ -48,16 +48,16 @@ const check_login = async (login: login_schema) => {
 }
 
 const create_user = async (user: user_params) => {
-    await addDoc(users_colection, user)
+    await addDoc(users_collection, user)
 }
 
 const update_user = async (user_id: string, user: user_params) => {
-    const q = query(users_colection,  where('id', '==', user_id))
+    const q = query(users_collection,  where('id', '==', user_id))
     const query_snapshot = await getDocs(q)
 
     if (!query_snapshot.empty) {
         const doc_id = query_snapshot.docs[0].id
-        const doc_ref = doc(users_colection, doc_id)
+        const doc_ref = doc(users_collection, doc_id)
         await updateDoc(doc_ref, user)
         return true
     } else {
@@ -66,12 +66,12 @@ const update_user = async (user_id: string, user: user_params) => {
 }
 
 const delete_user = async (id: string) => {
-    const q = query(users_colection, where('id', '==', id))
+    const q = query(users_collection, where('id', '==', id))
     const query_snapshot = await getDocs(q)
 
     if (!query_snapshot.empty) {
         const doc_id = query_snapshot.docs[0].id
-        const doc_ref = doc(users_colection, doc_id)
+        const doc_ref = doc(users_collection, doc_id)
         await deleteDoc(doc_ref)
         return true
     }
