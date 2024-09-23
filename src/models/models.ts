@@ -9,24 +9,28 @@ const user_schema = z.object({
     phone_number: z.string().min(11).max(11),
     password: z.string().min(8),
     first_login: z.boolean().optional(),
-    city: z.string()
+    city: z.string().optional(),
+    street: z.string().optional(),
+    scheduled_days: z.array(z.string()).optional(),
+    scheduled_time: z.string().optional(),
 })
 
 const first_login_schema = z.object({
-    id: z.string().optional(),
-    scheduled_days: z.array(z.string()),
+    scheduled_days: z.string(),
     scheduled_time: z.string(),
-    first_login: z.boolean()
+    types_of_garbage: z.string(),
+    city: z.string(),
+    street: z.string(),
+    first_login: z.boolean().optional()
 })
 
 const availability_schema = z.object({
-    cities: z.array(z.object({
-        city: z.string(),
-        days: z.array(z.object({
-            Segundas: z.array(z.string()),
-            Quartas: z.array(z.string())
-        }))
+    city: z.string(),
+    days: z.array(z.object({
+        Segundas: z.array(z.string()),
+        Quartas: z.array(z.string())
     }))
+    
 })
 
 const types_of_garbage_schema = z.array(z.string())
