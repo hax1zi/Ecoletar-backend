@@ -62,8 +62,6 @@ const remove_info_in_ecoletar = async (first_login_scheduling: first_login_param
         } else {
             return false
         }
-
-        
     }
 }
 
